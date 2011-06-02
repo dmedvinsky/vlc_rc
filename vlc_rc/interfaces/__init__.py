@@ -3,6 +3,10 @@ class InvalidInterfaceException(Exception):
 
 
 def get_by_name(name):
+    """
+    Returns an interface by its name.
+    Raises ``InvalidInterfaceException`` if there is no such interface.
+    """
     module_name = '%s.%s.%s' % ('vlc_rc', 'interfaces', name)
     try:
         module = __import__(module_name)

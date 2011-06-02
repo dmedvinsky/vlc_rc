@@ -1,7 +1,7 @@
 import telnetlib
 import re
 
-import base
+from vlc_rc.interfaces import base
 
 
 class InvalidPasswordException(Exception):

@@ -1,18 +1,18 @@
+#!/usr/bin/env python
 import unittest
 
-import rc
-import interfaces.telnet
+import vlc_rc
 
 
 class FactoryTestCase(unittest.TestCase):
     def test_telnet(self):
-        iface = rc.VlcRC().get(rc.INTERFACE_TELNET)
-        from interfaces.telnet import Interface
-        self.assertEquals(Interface, iface)
+        from vlc_rc.interfaces.telnet import Interface
+        iface = vlc_rc.interface(vlc_rc.INTERFACE_TELNET)
+        self.assertEqual(Interface, iface)
 
     def test_invalid(self):
-        self.assertRaises(rc.interfaces.InvalidInterfaceException,
-                          rc.VlcRC().get, 'telephaty')
+        self.assertRaises(vlc_rc.interfaces.InvalidInterfaceException,
+                          vlc_rc.interface, 'telephaty')
 
 
 class TelnetTestCase(unittest.TestCase):
@@ -61,19 +61,19 @@ class TelnetTestCase(unittest.TestCase):
         def authenticate(self, password):
             if password == self.password:
                 self.logged_in = True
-                return interfaces.telnet.Interface.WELCOME_STRING
+                return vlc_rc.interfaces.telnet.Interface.WELCOME_STRING
             else:
-                return interfaces.telnet.Interface.WRONG_PASSWORD
+                return vlc_rc.interfaces.telnet.Interface.WRONG_PASSWORD
 
         def execute(self, string):
             return ''
 
     def setUp(self):
-        interfaces.telnet.telnetlib.Telnet = self.MyTelnet
-        self.iface = interfaces.telnet.Interface(None, None)
+        vlc_rc.interfaces.telnet.telnetlib.Telnet = self.MyTelnet
+        self.iface = vlc_rc.interfaces.telnet.Interface(None, None)
 
     def test_connect_wrong_passwd(self):
-        self.assertRaises(interfaces.telnet.InvalidPasswordException,
+        self.assertRaises(vlc_rc.interfaces.telnet.InvalidPasswordException,
                           self.iface.connect, 'emotion')
 
     def test_connect_successful(self):
